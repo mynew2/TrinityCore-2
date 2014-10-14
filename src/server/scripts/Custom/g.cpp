@@ -403,7 +403,7 @@ void SumonarTrainerOriginais(Player* player, Creature* _creature, uint32 Treinad
 		if (itr != MemoriaTempo.end())
 		if (GetMSTimeDiffToNow(itr->second) < 60000) // 3 minutos = 180000 | 2 minutos = 120000  | 1 minutos = 60000  e etc.
 		{
-			ChatHandler(player->GetSession()).PSendSysMessage("|cffFF0000Espere %u minuto(s) para poder summonar novamente.|r", CalculateMinutos(GetMSTimeDiffToNow(itr->second)));
+			ChatHandler(player->GetSession()).PSendSysMessage("|cffFF0000Подождите %u minuto(s)для того, чтобы вызвать еще раз.|r", CalculateMinutos(GetMSTimeDiffToNow(itr->second)));
 			SumonarEM = false;
 		}
 		else
@@ -604,22 +604,22 @@ public:
 		if (player->IsInCombat())
 		{
 			player->CLOSE_GOSSIP_MENU();
-			ChatHandler(player->GetSession()).SendSysMessage("|cffFF0000Voce esta em combate!|r");
+			ChatHandler(player->GetSession()).SendSysMessage("|cffFF0000Вы находитесь в бою!|r");
 		}
 		else{			
-			player->ADD_GOSSIP_ITEM(3, "|cff008B8B|TInterface\\icons\\INV_Sigil_UlduarAll:30|tTreinar Spell|r", GOSSIP_SENDER_MAIN, TSUPREMO);
+			player->ADD_GOSSIP_ITEM(3, "|cff008B8B|TInterface\\icons\\INV_Sigil_UlduarAll:30|tЯкоб, научи пользоваться магией.|r", GOSSIP_SENDER_MAIN, TSUPREMO);
 
 			if (TRENADOR_ORIGINAL == 1)
-				player->ADD_GOSSIP_ITEM(3, "|cffFF0000|TInterface\\icons\\INV_Sigil_Mimiron:30|t  Treinadores Originais SetSumm|r", GOSSIP_SENDER_MAIN, TREINADOR_ORIGINAL_SPELLSUMMON); //nao requer script muitTrainer
+				player->ADD_GOSSIP_ITEM(3, "|cffFF0000|TInterface\\icons\\INV_Sigil_Mimiron:30|t  Наглый обманщик, призови сюда настоящего тренера!|r", GOSSIP_SENDER_MAIN, TREINADOR_ORIGINAL_SPELLSUMMON); //nao requer script muitTrainer
 
 			if (TRENADOR_ORIGINAL == 2)
-				player->ADD_GOSSIP_ITEM(3, "|cffFF0000|TInterface\\icons\\Ability_Vehicle_LaunchPlayer:30|t Trenadores Originais SetMenu|r", GOSSIP_SENDER_MAIN, TREINADOR_MENU_ORIGINAL); //requer script muitTrainer
+				player->ADD_GOSSIP_ITEM(3, "|cffFF0000|TInterface\\icons\\Ability_Vehicle_LaunchPlayer:30|t Наглый обманщик, призови сюда настоящего тренера!|r", GOSSIP_SENDER_MAIN, TREINADOR_MENU_ORIGINAL); //requer script muitTrainer
 
-			player->ADD_GOSSIP_ITEM_EXTENDED(3, "|cffCD2626|TInterface\\icons\\Ability_DualWield:30|t Especializacao Talentos Duplos|r", GOSSIP_SENDER_MAIN, DUAL_ESPECIALIZACAO, "Voce tem certesa que quer compra\nEspecializacao Telentos Duplos\n", 3 * GOLD, false);
+			player->ADD_GOSSIP_ITEM_EXTENDED(3, "|cffCD2626|TInterface\\icons\\Ability_DualWield:30|t Изучить двойную специализую!|r", GOSSIP_SENDER_MAIN, DUAL_ESPECIALIZACAO, "Voce tem certesa que quer compra\nEspecializacao Telentos Duplos\n", 3 * GOLD, false);
 	//		player->ADD_GOSSIP_ITEM(3, "|cffFF0000|TInterface\\icons\\INV_Inscription_MinorGlyph20:30|t Comprar Glyphs|r", GOSSIP_SENDER_MAIN, GLYPH_NPC_VENDOR); //Requer script MultiVendor
-			player->ADD_GOSSIP_ITEM(4, "|cffFF0000|TInterface\\icons\\Achievement_BG_hld4bases_EOS:40|t Resetar Talentos|r", GOSSIP_SENDER_MAIN, RESETAR__TALENTOS);
+			player->ADD_GOSSIP_ITEM(4, "|cffFF0000|TInterface\\icons\\Achievement_BG_hld4bases_EOS:40|t Сброс талантов|r", GOSSIP_SENDER_MAIN, RESETAR__TALENTOS);
 
-			player->ADD_GOSSIP_ITEM(8, "|cffFF0000|TInterface\\icons\\Ability_Hunter_MarkedForDeath:20|t Sair", GOSSIP_SENDER_MAIN, SAIR);
+			player->ADD_GOSSIP_ITEM(8, "|cffFF0000|TInterface\\icons\\Ability_Hunter_MarkedForDeath:20|t Выход", GOSSIP_SENDER_MAIN, SAIR);
 			player->SEND_GOSSIP_MENU(1, creature->GetGUID());
 			player->PlayerTalkClass->SendGossipMenu(11110, creature->GetGUID());
 		}
@@ -649,7 +649,7 @@ public:
 			break;
 		case RESETAR__TALENTOS:
 			if (player->GetFreeTalentPoints() == +player->CalculateTalentsPoints()){
-				ChatHandler(player->GetSession()).PSendSysMessage("|cffFF0000Seus talentos ja estam resetados!|r");
+				ChatHandler(player->GetSession()).PSendSysMessage("|cffFF0000Ваши таданты уже сброшены!|r");
 				player->CLOSE_GOSSIP_MENU();
 			}
 			else
@@ -666,7 +666,7 @@ public:
 					else{
 						player->ResetTalents();
 						player->SetFreeTalentPoints(player->CalculateTalentsPoints());
-						ChatHandler(player->GetSession()).PSendSysMessage("|cff00FF00Talentos resetados com sucesso!|r");
+						ChatHandler(player->GetSession()).PSendSysMessage("|cff00FF00Таланты успешно сброшены!|r");
 						player->SendTalentsInfoData(false);
 						_creature->CastSpell(player, 17251, false);
 					}
@@ -674,7 +674,7 @@ public:
 				else{
 					player->ResetTalents();
 					player->SetFreeTalentPoints(player->CalculateTalentsPoints());
-					ChatHandler(player->GetSession()).PSendSysMessage("|cff00FF00Talentos resetados com sucesso!|r");
+					ChatHandler(player->GetSession()).PSendSysMessage("|cff00FF00Таланты успешно сброшены!|r");
 					player->SendTalentsInfoData(false);
 					_creature->CastSpell(player, 17251, false);
 				}
@@ -708,7 +708,7 @@ public:
 			}
 			else
 			{
-				ChatHandler(player->GetSession()).PSendSysMessage("|cffFF0000Voce ja tem Especializacao Talentos Duplos|r");
+				ChatHandler(player->GetSession()).PSendSysMessage("|cffFF0000У вас уже это есть!|r");
 				player->CLOSE_GOSSIP_MENU();
 			}
 			break;		
