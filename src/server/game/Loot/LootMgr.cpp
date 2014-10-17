@@ -759,6 +759,8 @@ LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem* *qite
                         break;
                     }
             }
+        else
+        is_looted = true;
         }
         else if (!item->conditions.empty())
         {

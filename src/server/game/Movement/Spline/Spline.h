@@ -190,7 +190,7 @@ public:
                 new_length = std::numeric_limits<length_type>::max();
             lengths[++i] = new_length;
 
-            ASSERT(prev_length <= new_length);
+            //ASSERT(prev_length <= new_length);
             prev_length = new_length;
         }
     }

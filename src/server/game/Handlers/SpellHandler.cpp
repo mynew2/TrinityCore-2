@@ -574,6 +574,13 @@ void WorldSession::HandleSpellClick(WorldPacket& recvData)
     /// @todo Unit::SetCharmedBy: 28782 is not in world but 0 is trying to charm it! -> crash
     if (!unit->IsInWorld())
         return;
+		
+    if (!_player->IsAlive())
+    {
+        TC_LOG_ERROR("Possible hacking attempt: Player %s [guid: %u] tried to HandleSpellClick [guid: %u, entry: %u] in dead state!",
+        _player->GetName().c_str(), _player->GetGUIDLow(), unit->GetGUIDLow(), unit->GetEntry());
+        return;
+    }
 
     unit->HandleSpellClick(_player);
 }

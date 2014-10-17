@@ -120,6 +120,9 @@ void AnticheatMgr::StartHackDetection(Player* player, MovementInfo movementInfo,
 
     if (player->IsGameMaster())
         return;
+		
+    if (player->GetAreaId() == 4384 || player->GetAreaId() == 4610)
+		return;
 
     uint32 key = player->GetGUIDLow();
 
@@ -184,7 +187,7 @@ void AnticheatMgr::SpeedHackDetection(Player* player,MovementInfo movementInfo)
     // We also must check the map because the movementFlag can be modified by the client.
     // If we just check the flag, they could always add that flag and always skip the speed hacking detection.
     // 369 == DEEPRUN TRAM
-    if (m_Players[key].GetLastMovementInfo().HasMovementFlag(MOVEMENTFLAG_ONTRANSPORT) && player->GetMapId() == 369)
+    if (m_Players[key].GetLastMovementInfo().HasMovementFlag(MOVEMENTFLAG_ONTRANSPORT) /*&& player->GetMapId() == 369*/)
         return;
 
     uint32 distance2D = (uint32)movementInfo.pos.GetExactDist2d(&m_Players[key].GetLastMovementInfo().pos);
@@ -333,6 +336,18 @@ void AnticheatMgr::BuildReport(Player* player,uint8 reportType)
     {
         // display warning at the center of the screen, hacky way?
         std::string str = "";
+        if (sWorld->getBoolConfig(CONFIG_BAN_PLAYER)) //Make anticheat active.
+        {
+            if (m_Players[key].GetAverage() > 0.5f)
+            {
+                str = "Possible cheater found: " + std::string(player->GetName());
+                sWorld->BanCharacter(player->GetName(), "1h", str, "Anticheat");
+                sWorld->SendWorldText(LANG_BAN_CHEATER, player->GetName().c_str());
+                }
+            }
+        }
+        else
+        {
         str = "|cFFFFFC00[AC]|cFF00FFFF[|cFF60FF00" + std::string(player->GetName().c_str()) + "|cFF00FFFF] Possible cheater!";
         WorldPacket data(SMSG_NOTIFICATION, (str.size()+1));
         data << str;

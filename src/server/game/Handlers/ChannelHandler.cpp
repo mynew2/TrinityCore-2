@@ -19,6 +19,7 @@
 #include "ObjectMgr.h"                                      // for normalizePlayerName
 #include "ChannelMgr.h"
 #include "Player.h"
+#include "Chat.h"
 
 #include <cctype>
 
