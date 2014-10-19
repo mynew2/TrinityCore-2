@@ -3086,6 +3086,16 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 54171: // Divine Storm
                 spellInfo->MaxAffectedTargets = 3;
                 break;
+            case 7328:  // Redemption
+            case 7329:  // Redemption
+            case 10322: // Redemption
+            case 10324: // Redemption
+            case 20772: // Redemption
+            case 20773: // Redemption
+            case 48949: // Redemption
+            case 48950: // Redemption
+                spellInfo->SpellFamilyName = SPELLFAMILY_PALADIN;
+                break;
             case 38310: // Multi-Shot
             case 53385: // Divine Storm (Damage)
                 spellInfo->MaxAffectedTargets = 4;
@@ -3139,6 +3149,13 @@ void SpellMgr::LoadSpellInfoCorrections()
                 break;
             case 28200: // Ascendance (Talisman of Ascendance trinket)
                 spellInfo->ProcCharges = 6;
+                break;
+            case 44461: // Living bomb
+            case 55361:
+            case 55362:
+                spellInfo->AttributesEx |= SPELL_ATTR1_CANT_BE_REFLECTED;
+                spellInfo->AttributesEx2 |= SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS;
+                spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_INITIAL_AGGRO;
                 break;
             case 37408: // Oscillation Field
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_STACK_FOR_DIFF_CASTERS;
@@ -3266,6 +3283,10 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 70893: // Culling The Herd (needs target selection script)
                 spellInfo->Effects[EFFECT_0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
                 spellInfo->Effects[EFFECT_0].TargetB = SpellImplicitTargetInfo(TARGET_UNIT_MASTER);
+                break;
+            case 5171: // TW - Slice and Dice (Rank 1)
+            case 6774: // TW - Slice and Dice (Rank 2)
+                spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_INITIAL_AGGRO;
                 break;
             case 54800: // Sigil of the Frozen Conscience - change class mask to custom extended flags of Icy Touch
                         // this is done because another spell also uses the same SpellFamilyFlags as Icy Touch

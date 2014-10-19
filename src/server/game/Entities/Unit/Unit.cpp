@@ -595,6 +595,17 @@ uint32 Unit::DealDamage(Unit* victim, uint32 damage, CleanDamage const* cleanDam
         }
         else
             victim->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_TAKE_DAMAGE, 0);
+			
+        // TW - Interrupt spells with SPELL_INTERRUPT_FLAG_ABORT_ON_DMG on absorbed damage (no dots)
+        if (!damage && damagetype != DOT && cleanDamage && cleanDamage->absorbed_damage)
+            if (victim != this && victim->GetTypeId() == TYPEID_PLAYER)
+                if (Spell* spell = victim->m_currentSpells[CURRENT_GENERIC_SPELL])
+                    if (spell->getState() == SPELL_STATE_PREPARING)
+                    {
+                        uint32 interruptFlags = spell->m_spellInfo->InterruptFlags;
+                        if (interruptFlags & SPELL_INTERRUPT_FLAG_ABORT_ON_DMG)
+                            victim->InterruptNonMeleeSpells(false);
+                    }
 
         // We're going to call functions which can modify content of the list during iteration over it's elements
         // Let's copy the list so we can prevent iterator invalidation
@@ -7970,8 +7981,14 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
                                 trigger_spell_id = 67760;
                                 break;
                         }
+						
+                        if (cooldown && GetTypeId() == TYPEID_PLAYER && ToPlayer()->HasSpellCooldown(stack_spell_id))
+                            return false;
 
                         CastSpell(this, stack_spell_id, true, NULL, triggeredByAura);
+						
+                        if (cooldown && GetTypeId() == TYPEID_PLAYER)
+                            ToPlayer()->AddSpellCooldown(stack_spell_id, 0, time(NULL) + cooldown);
 
                         Aura* dummy = GetAura(stack_spell_id);
                         if (!dummy || dummy->GetStackAmount() < triggerAmount)
@@ -8317,11 +8334,13 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
 
             if (cooldown && target->GetTypeId() == TYPEID_PLAYER && target->ToPlayer()->HasSpellCooldown(trigger_spell_id))
                 return false;
+            if (trigger_spell_id == 52916)
+                CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
+            else
+                target->CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
 
-            target->CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
-
-            if (cooldown && GetTypeId() == TYPEID_PLAYER)
-                ToPlayer()->AddSpellCooldown(trigger_spell_id, 0, time(NULL) + cooldown);
+            if (cooldown && target->GetTypeId() == TYPEID_PLAYER)
+                target->ToPlayer()->AddSpellCooldown(trigger_spell_id, 0, time(NULL) + cooldown);
             return true;
         }
         // Cast positive spell on enemy target
@@ -13115,6 +13134,11 @@ bool Unit::IsInFeralForm() const
 
 bool Unit::IsInDisallowedMountForm() const
 {
+    // !Hack alert - this might not be valid
+    if (SpellInfo const* transformSpellInfo = sSpellMgr->GetSpellInfo(getTransForm()))
+        if (transformSpellInfo->Attributes & SPELL_ATTR0_CASTABLE_WHILE_MOUNTED)
+            return false;
+
     if (ShapeshiftForm form = GetShapeshiftForm())
     {
         SpellShapeshiftEntry const* shapeshift = sSpellShapeshiftStore.LookupEntry(form);
