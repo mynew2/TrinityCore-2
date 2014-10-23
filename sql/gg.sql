@@ -1,19 +1,4 @@
-SET @TSUPREMO = 900030;
-DELETE FROM `creature_template` WHERE entry = @TSUPREMO;
-INSERT INTO `creature_template` (`entry`, `modelid1`, `name`, `subname`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `unit_class`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `ScriptName`) VALUES
-(@TSUPREMO,'18998','Великий тренер Jacob','Научу любому заклинанию','1','80','2','35','177','0.4','128','1','0','0','0','2','npc_treinador_supremo');
-
-SET @TSUPREMO = 900030;
-SET @GUID := (SELECT MIN(guid) FROM `creature` WHERE id = @TSUPREMO);
-DELETE FROM creature_addon WHERE guid = @GUID;
-
-INSERT INTO `creature_addon` (`guid`, `bytes2`, `auras`) VALUES
-(@GUID,'4097','46934');
-
-REPLACE INTO `npc_text` (`ID`, `text0_0`) VALUES
-('11110','Приветствую |cff1E90FF$n:|r\r\nЯ великий тренер Jacob\r\nНаучу любому заклинанию\r\nУ меня ты сможешь изучить любому заклинание, а также разучить его!');
-
-UPDATE `trinity_string` SET `content_loc8`='|cFFFFFC00[AnticheatGear]|cFF00FFFF[|cFF60FF00%s|cFF00FFFF] Забанен за Cheat!|r' WHERE (`entry`='66666');
+INSERT INTO `trinity_string` (`entry`, `content_loc8`) VALUES ('66666', '|cFFFFFC00[AnticheatGear]|cFF00FFFF[|cFF60FF00%s|cFF00FFFF] Забанен за Cheat!|r');
 
 INSERT INTO `disables` (`sourceType`, `entry`, `flags`, `params_0`, `params_1`, `comment`) VALUES
 (0, 54933, 1, '0', '0', 'Harpun Spell');
@@ -39,9 +24,6 @@ UPDATE creature_template SET InhabitType = InhabitType | 4 WHERE `entry` IN (332
 
 INSERT INTO disables VALUES (7, 650, 0, '', '', 'Mmaps - Trial of the Champion');
 INSERT INTO disables VALUES (7, 649, 0, '', '', 'Mmaps - Trial of the Crusader');
-
-INSERT INTO `disables` (`sourceType`, `entry`, `flags`, `params_0`, `params_1`, `comment`) VALUES
-(0, 54933, 1, '0', '0', 'Harpun Spell');
 
 UPDATE `creature_template` SET `rank`='2' WHERE `entry` IN (37540,38128,38699,38700,37215,38129,38701,38702);
 
@@ -88,3 +70,9 @@ UPDATE `trinity_string` SET `content_loc8`='|cffff0000[Арена-Аннонс]:
 UPDATE `trinity_string` SET `content_loc8`='|cffff0000[Арена-Аннонс]:|r %s -- Exited : %ux%u : %u|r' WHERE (`entry`='719');
 UPDATE `trinity_string` SET `content_loc8`='|cffff0000|wowgear project| %s дал бан персонажу %s на %s, |cffff0000  по причине: %s|r' WHERE (`entry`='11004');
 UPDATE `trinity_string` SET `content_loc8`='|Hplayer:$N|h[$N]|h получил достижение $a!' WHERE (`entry`='810');
+
+SET @ITEM := 50274; -- Shadowfrost Shard
+UPDATE `creature_loot_template` SET `Chance`=38 WHERE `entry` IN
+(38297,37959,37506,38550,38785,38436,38586,38267,39168) and`item`=@ITEM;
+UPDATE `creature_loot_template` SET `Chance`=68 WHERE `entry` IN
+(37957,37504,38106,38390,38431,38401,38434,38265,39166) and`item`=@ITEM;

@@ -1422,9 +1422,7 @@ void AddBattlegroundScripts()
 
 void AddSC_PWS_Transmogrification();
 void AddSC_CS_Transmogrification();
-void AddSC_npc_treinador_supremo();
 void AddSC_DuelReset();
-void AddSC_Chat_AntiAd();
 #endif
 
 void AddCustomScripts()
@@ -1434,8 +1432,6 @@ void AddCustomScripts()
 
     AddSC_PWS_Transmogrification();
     AddSC_CS_Transmogrification();
-    AddSC_npc_treinador_supremo();
     AddSC_DuelReset();
-AddSC_Chat_AntiAd();
 #endif
 }

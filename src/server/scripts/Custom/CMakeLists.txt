@@ -16,9 +16,7 @@ set(scripts_STAT_SRCS
     Custom/Transmog/Transmogrification.h
     Custom/Transmog/Transmogrification.cpp
     Custom/Transmog/Transmogrifier.cpp
-	Custom/g.cpp
 	Custom/duel_reset.cpp
-Custom/tr.cpp
 )
 
 message("  -> Prepared: Custom")
