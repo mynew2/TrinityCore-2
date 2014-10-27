@@ -76,3 +76,5 @@ UPDATE `creature_loot_template` SET `Chance`=38 WHERE `entry` IN
 (38297,37959,37506,38550,38785,38436,38586,38267,39168) and`item`=@ITEM;
 UPDATE `creature_loot_template` SET `Chance`=68 WHERE `entry` IN
 (37957,37504,38106,38390,38431,38401,38434,38265,39166) and`item`=@ITEM;
+
+-- last merge 2014_10_21_00_world
