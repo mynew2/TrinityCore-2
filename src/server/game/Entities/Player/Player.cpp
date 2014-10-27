@@ -1650,6 +1650,10 @@ void Player::Update(uint32 p_time)
     }
 
     m_achievementMgr->UpdateTimedAchievements(p_time);
+	
+    // Fix Sum Of Enrage and trigger_spell Wrecking Crew (Enrage too)
+    if (HasAura(14204) && HasAura(57522))
+        ToPlayer()->RemoveAura(57522);
 
     if (HasUnitState(UNIT_STATE_MELEE_ATTACKING) && !HasUnitState(UNIT_STATE_CASTING))
     {
