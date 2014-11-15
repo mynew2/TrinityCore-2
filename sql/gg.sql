@@ -82,4 +82,4 @@ UPDATE `conditions` SET `ConditionValue2`=1 WHERE `SourceTypeOrReferenceId`=15 A
 -- hack fix
 UPDATE  `creature_template` SET  `ScriptName` =  '' WHERE  `creature_template`.`entry` =30234;
 
--- last merge 2014_10_21_00_world
+-- last merge 2014_11_09_00_world
