@@ -313,6 +313,9 @@ class boss_freya : public CreatureScript
 
             void Reset() override
             {
+                if (instance->GetBossState(BOSS_FREYA) == DONE)
+                    return;
+
                 _Reset();
                 Initialize();
             }
@@ -334,6 +337,9 @@ class boss_freya : public CreatureScript
 
             void EnterCombat(Unit* who) override
             {
+                if (instance->GetBossState(BOSS_FREYA) == DONE)
+                    return;
+
                 _EnterCombat();
                 DoZoneInCombat();
                 Creature* Elder[3];

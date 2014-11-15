@@ -145,7 +145,7 @@ enum HodirActions
 
 enum Misc
 {
-    DATA_GETTING_COLD_IN_HERE                    = 29672968 // 2967, 2968 are achievement IDs
+    //DATA_GETTING_COLD_IN_HERE                    = 29672968 // 2967, 2968 are achievement IDs
 };
 
 Position const SummonPositions[8] =
@@ -279,6 +279,10 @@ class npc_ice_block : public CreatureScript
                     // Prevents to have Ice Block on other place than target is
                     me->NearTeleportTo(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), target->GetOrientation());
                 }
+
+                // Register as Hodir's summon
+                if (Creature* Hodir = ObjectAccessor::GetCreature(*me, instance->GetGuidData(BOSS_HODIR)))
+                    Hodir->AI()->JustSummoned(me);
             }
 
             void DamageTaken(Unit* who, uint32& /*damage*/) override
@@ -339,6 +343,9 @@ class boss_hodir : public CreatureScript
 
             void Reset() override
             {
+                if (instance->GetBossState(BOSS_HODIR) == DONE)
+                    return;
+
                 Initialize();
 
                 _Reset();
@@ -384,6 +391,8 @@ class boss_hodir : public CreatureScript
                     if (iCouldSayThatThisCacheWasRare)
                         instance->SetData(DATA_HODIR_RARE_CACHE, 1);
 
+                    DoCastAOE(SPELL_KILL_CREDIT);
+
                     me->RemoveAllAuras();
                     me->RemoveAllAttackers();
                     me->AttackStop();
@@ -399,10 +408,22 @@ class boss_hodir : public CreatureScript
                     me->setFaction(35);
                     me->DespawnOrUnsummon(10000);
 
-                    DoCastAOE(SPELL_KILL_CREDIT);
-
                     _JustDied();
                 }
+            }
+
+            uint32 GetData(uint32 type) const override
+            {
+                switch (type)
+                {
+                    case DATA_CHEESE_THE_FREEZE:
+                        return cheeseTheFreeze;
+                    case DATA_COOLEST_FRIENDS:
+                        return iHaveTheCoolestFriends;
+                    case DATA_GETTING_COLD_IN_HERE:
+                        return gettingColdInHere;
+                }
+                return 0;
             }
 
             void UpdateAI(uint32 diff) override
