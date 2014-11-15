@@ -79,4 +79,7 @@ UPDATE `creature_loot_template` SET `Chance`=68 WHERE `entry` IN
 
 UPDATE `conditions` SET `ConditionValue2`=1 WHERE `SourceTypeOrReferenceId`=15 AND `SourceGroup`=10383 AND `SourceEntry`=0 AND `ElseGroup`=0 AND `ConditionTypeOrReference`=1 AND `ConditionValue1`=63663;
 
+-- hack fix
+UPDATE  `creature_template` SET  `ScriptName` =  '' WHERE  `creature_template`.`entry` =30234;
+
 -- last merge 2014_10_21_00_world
